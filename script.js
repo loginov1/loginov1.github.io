@@ -44,11 +44,11 @@ let cookingTimer, countdownTimer;
     let startTime, lastStageTime;
     let currentStageIndex = 0;
     const cookingStages = [
-        { stage: "Add onions and stir", duration: 0.5 },
-        { stage: "test stage 2", duration: 1 },
-        { stage: "test stage 333", duration: 0.5 },
-        { stage: "Add the carrots", duration: 1 },
-        { stage: "Add the rice and don't stir", duration: 70 }
+        { stage: "Stage 1", duration: 1 },
+        { stage: "Stage 2", duration: 2 },
+        { stage: "Stage 3", duration: 3 },
+        { stage: "Stage 4", duration: 4 },
+        { stage: "Add the rice and don't stir", duration: 10 }
     ];
 
     function startCooking(preCookingDiv, duringCookingDiv) {
