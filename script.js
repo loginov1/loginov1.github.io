@@ -32,14 +32,20 @@ function calculateIngredients(guests, ingredientsList) {
 
 const baseIngredients = {
     rice: 500, // grams for 4 guests
-    meat: 400,
-    carrots: 300
+    meat: 500,
+    carrots: 500,
+    sheep_tail_fat: 150,
+    onions: 200,
+    garlic_heads: 1,
+    pepper: 1.5
 };
 
 let cookingTimer;
 let startTime;
 const cookingStages = [
-    { stage: "Add onions and stir", duration: 15 },
+    { stage: "Add onions and stir", duration: 1 },
+    { stage: "test stage 2", duration: 2 },
+    { stage: "test stage 333", duration: 3 },
     { stage: "Add the carrots", duration: 65 },
     { stage: "Add the rice and don't stir", duration: 70 }
 ];
