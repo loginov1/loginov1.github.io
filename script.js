@@ -15,7 +15,7 @@ const baseIngredients = {
     sheep_tail_fat: 150,
     onions: 200,
     garlic_heads: 1,
-    red_pepper: 1.5
+    pepper: 1.5
 };
 
 function calculateIngredients(guests) {
@@ -27,7 +27,32 @@ function calculateIngredients(guests) {
     document.getElementById('ingredientsList').innerHTML = ingredientsHtml;
 }
 
-// Placeholder for the cooking stages and timer logic
+let cookingTimer;
+let currentStage = 0;
+const cookingStages = [
+    { stage: "Heat Kazan", duration: 5, instruction: "Set fire to medium", nextAction: "Add oil" },
+    { stage: "Add Oil", duration: 2, instruction: "Add 200ml of oil", nextAction: "Add meat" },
+    { stage: "Add Meat", duration: 10, instruction: "Add the meat and fry", nextAction: "Add carrots" },
+    // Additional stages can be added here
+];
+
 function startCooking() {
-    // TODO: Implement timer and cooking instructions logic
+    currentStage = 0;
+    updateCookingStage();
+}
+
+function updateCookingStage() {
+    if (currentStage < cookingStages.length) {
+        const stage = cookingStages[currentStage];
+        document.getElementById('currentStage').innerHTML = '<b>Current Stage:</b> ' + stage.stage;
+        document.getElementById('fireIntensity').innerHTML = '<b>Instructions:</b> ' + stage.instruction;
+        cookingTimer = setTimeout(function() {
+            alert('Time for the next step: ' + stage.nextAction);
+            currentStage++;
+            updateCookingStage();
+        }, stage.duration * 60000); // Convert minutes to milliseconds
+    } else {
+        document.getElementById('currentStage').innerHTML = '<b>Cooking Completed</b>';
+        clearTimeout(cookingTimer);
+    }
 }
