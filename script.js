@@ -53,12 +53,13 @@ const baseIngredients = {
 
     function startCooking(preCookingDiv, duringCookingDiv) {
         startTime = new Date();
-        lastStageTime = new Date(); // Initialise the last stage time
+        lastStageTime = new Date();
         currentStageIndex = 0;
         preCookingDiv.classList.add('hidden');
         duringCookingDiv.classList.remove('hidden');
         updateCookingStage();
         updateTimer();
+        initializeNextStep();
     }
 
     function updateCookingStage() {
@@ -76,16 +77,14 @@ const baseIngredients = {
             }
 
             if (nextStepEl && cookingStages[currentStageIndex + 1]) {
-                updateNextStageCountdown(cookingStages[currentStageIndex + 1], nextStepEl, lastStageTime);
-            } else if (nextStepEl) {
-                nextStepEl.innerHTML = 'Next step: ' + cookingStages[currentStageIndex + 1].stage;
+                updateNextStageCountdown(cookingStages[currentStageIndex + 1], nextStepEl);
             }
 
             lastStageTime = new Date();
             cookingTimer = setTimeout(function() {
                 currentStageIndex++;
                 updateCookingStage();
-            }, currentStage.duration * 60000); // Convert minutes to milliseconds
+            }, currentStage.duration * 60000);
         } else {
             if (currentStepEl) currentStepEl.innerHTML = '<b>Cooking Completed</b>';
             clearTimeout(cookingTimer);
