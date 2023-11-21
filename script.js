@@ -40,45 +40,70 @@ const baseIngredients = {
     pepper: 1.5
 };
 
-let cookingTimer;
-let startTime;
-let currentStageIndex = 0;
-const cookingStages = [
-    { stage: "Add onions and stir", duration: 1 },
-    { stage: "test stage 2", duration: 2 },
-    { stage: "test stage 333", duration: 3 },
-    { stage: "Add the carrots", duration: 65 },
-    { stage: "Add the rice and don't stir", duration: 70 }
-];
+let cookingTimer, countdownTimer;
+    let startTime, lastStageTime;
+    let currentStageIndex = 0;
+    const cookingStages = [
+        { stage: "Add onions and stir", duration: 1 },
+        { stage: "test stage 2", duration: 2 },
+        { stage: "test stage 333", duration: 3 },
+        { stage: "Add the carrots", duration: 65 },
+        { stage: "Add the rice and don't stir", duration: 70 }
+    ];
 
-function startCooking(preCookingDiv, duringCookingDiv) {
-    startTime = new Date();
-    currentStageIndex = 0;
-    preCookingDiv.classList.add('hidden');
-    duringCookingDiv.classList.remove('hidden');
-    updateCookingStage();
-    updateTimer();
-}
-
-function updateCookingStage() {
-    const currentStepEl = document.getElementById('currentStep');
-    const nextStepEl = document.getElementById('nextStep');
-    if (currentStageIndex < cookingStages.length) {
-        const currentStage = cookingStages[currentStageIndex];
-        if (currentStepEl) currentStepEl.innerHTML = currentStage.stage;
-        if (nextStepEl && cookingStages[currentStageIndex + 1]) {
-            nextStepEl.innerHTML = 'Next step at ' + formatTime(currentStage.duration) + ' - ' + cookingStages[currentStageIndex + 1].stage;
-        }
-        cookingTimer = setTimeout(function() {
-            currentStageIndex++;
-            updateCookingStage();
-        }, currentStage.duration * 60000); // Convert minutes to milliseconds
-    } else {
-        if (currentStepEl) currentStepEl.innerHTML = '<b>Cooking Completed</b>';
-        clearTimeout(cookingTimer);
+    function startCooking(preCookingDiv, duringCookingDiv) {
+        startTime = new Date();
+        lastStageTime = new Date(); // Initial stage time
+        currentStageIndex = 0;
+        preCookingDiv.classList.add('hidden');
+        duringCookingDiv.classList.remove('hidden');
+        updateCookingStage();
+        updateTimer();
     }
-}
 
+    function updateCookingStage() {
+        const previousStepEl = document.getElementById('previousStep');
+        const currentStepEl = document.getElementById('currentStep');
+        const nextStepEl = document.getElementById('nextStep');
+        if (currentStageIndex < cookingStages.length) {
+            const currentStage = cookingStages[currentStageIndex];
+            if (currentStepEl) currentStepEl.innerHTML = currentStage.stage;
+            if (previousStepEl && currentStageIndex > 0) {
+                const prevStageTime = convertToCET(lastStageTime);
+                previousStepEl.innerHTML = prevStageTime + ' - ' + cookingStages[currentStageIndex - 1].stage;
+            }
+            if (nextStepEl && cookingStages[currentStageIndex + 1]) {
+                updateNextStageCountdown(cookingStages[currentStageIndex + 1], nextStepEl);
+            }
+            lastStageTime = new Date(); // Update last stage time
+            cookingTimer = setTimeout(function() {
+                currentStageIndex++;
+                updateCookingStage();
+            }, currentStage.duration * 60000); // Convert minutes to milliseconds
+        } else {
+            if (currentStepEl) currentStepEl.innerHTML = '<b>Cooking Completed</b>';
+            clearTimeout(cookingTimer);
+            clearInterval(countdownTimer);
+        }
+    }
+    function updateNextStageCountdown(nextStage, nextStepEl) {
+        if (countdownTimer) clearInterval(countdownTimer);
+        countdownTimer = setInterval(function() {
+            const now = new Date();
+            const timeLeft = (nextStage.duration * 60000) - (now - lastStageTime);
+            if (timeLeft > 0) {
+                const minutesLeft = Math.ceil(timeLeft / 60000);
+                nextStepEl.innerHTML = nextStage.stage + ' in ' + minutesLeft + ' minutes';
+            }
+        }, 60000);
+    }
+
+    function convertToCET(date) {
+        const cetOffset = 1; // CET is UTC+1
+        const cetDate = new Date(date.getTime() + cetOffset * 3600 * 1000);
+        return cetDate.toISOString().split('T')[1].split('.')[0];
+    }
+    
 function updateTimer() {
     setInterval(function() {
         const now = new Date();
