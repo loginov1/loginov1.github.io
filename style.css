@@ -1,13 +1,27 @@
 
 body, html {
-    font-family: Arial, sans-serif;
+    font-family: 'Times New Roman', serif; 
     text-align: center;
     padding: 20px;
+    background-color: #f5f0e6; 
 }
 
 .container {
     max-width: 600px;
     margin: auto;
+    border: 2px solid #004d40; /* Deep blue border */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.timer, #previousStep, #currentStep, #nextStep {
+    background-color: #fff; /* Light background for text areas */
+    color: #004d40; /* Deep blue text color */
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
 }
 
 .hidden {
@@ -20,8 +34,8 @@ body, html {
     margin: 20px 0;
 }
 
-#previousStep, #currentStep, #nextStep {
-    margin: 10px 0;
+#previousStep, #nextStep {
+    margin: 24px 0;
 }
 
 #currentStep {
@@ -33,4 +47,18 @@ body, html {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
+}
+
+button {
+    background-color: #00897b; /* A rich teal color for buttons */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+button:hover {
+    background-color: #00695c;
 }
