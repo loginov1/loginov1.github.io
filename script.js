@@ -10,8 +10,12 @@ document.getElementById('startCooking').addEventListener('click', function() {
 
 const baseIngredients = {
     rice: 500, // grams for 4 guests
-    meat: 400,
-    carrots: 300
+    meat: 500,
+    carrots: 500,
+    sheep_tail_fat: 150,
+    onions: 200,
+    garlic_heads: 1,
+    red_pepper: 1.5
 };
 
 function calculateIngredients(guests) {
