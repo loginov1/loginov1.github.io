@@ -44,10 +44,10 @@ let cookingTimer, countdownTimer;
     let startTime, lastStageTime;
     let currentStageIndex = 0;
     const cookingStages = [
-        { stage: "Add onions and stir", duration: 1 },
-        { stage: "test stage 2", duration: 2 },
-        { stage: "test stage 333", duration: 3 },
-        { stage: "Add the carrots", duration: 65 },
+        { stage: "Add onions and stir", duration: 0.5 },
+        { stage: "test stage 2", duration: 1 },
+        { stage: "test stage 333", duration: 0.5 },
+        { stage: "Add the carrots", duration: 1 },
         { stage: "Add the rice and don't stir", duration: 70 }
     ];
 
@@ -103,7 +103,7 @@ let cookingTimer, countdownTimer;
         const cetDate = new Date(date.getTime() + cetOffset * 3600 * 1000);
         return cetDate.toISOString().split('T')[1].split('.')[0];
     }
-    
+
 function updateTimer() {
     setInterval(function() {
         const now = new Date();
