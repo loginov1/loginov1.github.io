@@ -1,23 +1,25 @@
 
-document.getElementById('calculateIngredients').addEventListener('click', function() {
-    const guests = parseInt(document.getElementById('guestsInput').value);
-    calculateIngredients(guests);
-});
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById('calculateIngredients')) {
+        document.getElementById('calculateIngredients').addEventListener('click', function() {
+            const guests = parseInt(document.getElementById('guestsInput').value);
+            calculateIngredients(guests);
+        });
+    }
 
-document.getElementById('startCooking').addEventListener('click', function() {
-    startCooking();
-    document.getElementById('preCooking').classList.add('hidden');
-    document.getElementById('duringCooking').classList.remove('hidden');
+    if (document.getElementById('startCooking')) {
+        document.getElementById('startCooking').addEventListener('click', function() {
+            startCooking();
+            document.getElementById('preCooking').classList.add('hidden');
+            document.getElementById('duringCooking').classList.remove('hidden');
+        });
+    }
 });
 
 const baseIngredients = {
     rice: 500, // grams for 4 guests
-    meat: 500,
-    carrots: 500,
-    sheep_tail_fat: 150,
-    onions: 200,
-    garlic_heads: 1,
-    pepper: 1.5
+    meat: 400,
+    carrots: 300
 };
 
 function calculateIngredients(guests) {
@@ -46,16 +48,20 @@ function startCooking() {
 }
 
 function updateCookingStage() {
+    const currentStepEl = document.getElementById('currentStep');
+    const nextStepEl = document.getElementById('nextStep');
     if (currentStage < cookingStages.length) {
         const stage = cookingStages[currentStage];
-        document.getElementById('currentStep').innerHTML = stage.stage;
-        document.getElementById('nextStep').innerHTML = 'Next step at ' + formatTime(cookingStages[currentStage + 1].duration) + ' - ' + cookingStages[currentStage + 1].stage;
+        if (currentStepEl) currentStepEl.innerHTML = stage.stage;
+        if (nextStepEl && cookingStages[currentStage + 1]) {
+            nextStepEl.innerHTML = 'Next step at ' + formatTime(cookingStages[currentStage + 1].duration) + ' - ' + cookingStages[currentStage + 1].stage;
+        }
         cookingTimer = setTimeout(function() {
             currentStage++;
             updateCookingStage();
         }, stage.duration * 60000); // Convert minutes to milliseconds
     } else {
-        document.getElementById('currentStep').innerHTML = '<b>Cooking Completed</b>';
+        if (currentStepEl) currentStepEl.innerHTML = '<b>Cooking Completed</b>';
         clearTimeout(cookingTimer);
     }
 }
@@ -65,7 +71,8 @@ function updateTimer() {
         const now = new Date();
         const elapsed = new Date(now - startTime);
         const formattedTime = formatTime(elapsed.getUTCHours()) + ':' + formatTime(elapsed.getUTCMinutes()) + ':' + formatTime(elapsed.getUTCSeconds());
-        document.getElementById('currentTimer').innerHTML = formattedTime;
+        const currentTimerEl = document.getElementById('currentTimer');
+        if (currentTimerEl) currentTimerEl.innerHTML = formattedTime;
     }, 1000);
 }
 

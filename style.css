@@ -10,7 +10,25 @@ body, html {
     margin: auto;
 }
 
-#ingredientsList, #timer, #currentStage, #fireIntensity {
+.hidden {
+    display: none;
+}
+
+.timer {
+    font-size: 36px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+#previousStep, #currentStep, #nextStep {
+    margin: 10px 0;
+}
+
+#currentStep {
+    font-size: 30px;
+}
+
+#ingredientsList {
     margin-top: 20px;
     padding: 10px;
     border: 1px solid #ddd;
