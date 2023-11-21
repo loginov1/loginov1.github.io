@@ -1,20 +1,34 @@
 
 document.addEventListener('DOMContentLoaded', function() {
-    if (document.getElementById('calculateIngredients')) {
-        document.getElementById('calculateIngredients').addEventListener('click', function() {
-            const guests = parseInt(document.getElementById('guestsInput').value);
-            calculateIngredients(guests);
+    const calculateIngredientsBtn = document.getElementById('calculateIngredients');
+    const startCookingBtn = document.getElementById('startCooking');
+    const guestsInput = document.getElementById('guestsInput');
+    const ingredientsList = document.getElementById('ingredientsList');
+    const preCookingDiv = document.getElementById('preCooking');
+    const duringCookingDiv = document.getElementById('duringCooking');
+
+    if (calculateIngredientsBtn && guestsInput && ingredientsList) {
+        calculateIngredientsBtn.addEventListener('click', function() {
+            const guests = parseInt(guestsInput.value);
+            calculateIngredients(guests, ingredientsList);
         });
     }
 
-    if (document.getElementById('startCooking')) {
-        document.getElementById('startCooking').addEventListener('click', function() {
-            startCooking();
-            document.getElementById('preCooking').classList.add('hidden');
-            document.getElementById('duringCooking').classList.remove('hidden');
+    if (startCookingBtn && preCookingDiv && duringCookingDiv) {
+        startCookingBtn.addEventListener('click', function() {
+            startCooking(preCookingDiv, duringCookingDiv);
         });
     }
 });
+
+function calculateIngredients(guests, ingredientsList) {
+    const factor = guests / 4;
+    let ingredientsHtml = '<h3>Ingredients List</h3>';
+    for (const [ingredient, quantity] of Object.entries(baseIngredients)) {
+        ingredientsHtml += `<p>${ingredient}: ${Math.round(quantity * factor)}g</p>`;
+    }
+    ingredientsList.innerHTML = ingredientsHtml;
+}
 
 const baseIngredients = {
     rice: 500, // grams for 4 guests
@@ -22,27 +36,19 @@ const baseIngredients = {
     carrots: 300
 };
 
-function calculateIngredients(guests) {
-    const factor = guests / 4;
-    let ingredientsHtml = '<h3>Ingredients List</h3>';
-    for (const [ingredient, quantity] of Object.entries(baseIngredients)) {
-        ingredientsHtml += `<p>${ingredient}: ${Math.round(quantity * factor)}g</p>`;
-    }
-    document.getElementById('ingredientsList').innerHTML = ingredientsHtml;
-}
-
 let cookingTimer;
 let startTime;
 const cookingStages = [
     { stage: "Add onions and stir", duration: 15 },
     { stage: "Add the carrots", duration: 65 },
-    { stage: "Add the rice and don't stir", duration: 70 },
-    // Additional stages can be added here
+    { stage: "Add the rice and don't stir", duration: 70 }
 ];
 
-function startCooking() {
+function startCooking(preCookingDiv, duringCookingDiv) {
     startTime = new Date();
     currentStage = 0;
+    preCookingDiv.classList.add('hidden');
+    duringCookingDiv.classList.remove('hidden');
     updateCookingStage();
     updateTimer();
 }
