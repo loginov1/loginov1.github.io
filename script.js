@@ -42,6 +42,7 @@ const baseIngredients = {
 
 let cookingTimer;
 let startTime;
+let currentStageIndex = 0;
 const cookingStages = [
     { stage: "Add onions and stir", duration: 1 },
     { stage: "test stage 2", duration: 2 },
@@ -52,7 +53,7 @@ const cookingStages = [
 
 function startCooking(preCookingDiv, duringCookingDiv) {
     startTime = new Date();
-    currentStage = 0;
+    currentStageIndex = 0;
     preCookingDiv.classList.add('hidden');
     duringCookingDiv.classList.remove('hidden');
     updateCookingStage();
@@ -62,16 +63,16 @@ function startCooking(preCookingDiv, duringCookingDiv) {
 function updateCookingStage() {
     const currentStepEl = document.getElementById('currentStep');
     const nextStepEl = document.getElementById('nextStep');
-    if (currentStage < cookingStages.length) {
-        const stage = cookingStages[currentStage];
-        if (currentStepEl) currentStepEl.innerHTML = stage.stage;
-        if (nextStepEl && cookingStages[currentStage + 1]) {
-            nextStepEl.innerHTML = 'Next step at ' + formatTime(cookingStages[currentStage + 1].duration) + ' - ' + cookingStages[currentStage + 1].stage;
+    if (currentStageIndex < cookingStages.length) {
+        const currentStage = cookingStages[currentStageIndex];
+        if (currentStepEl) currentStepEl.innerHTML = currentStage.stage;
+        if (nextStepEl && cookingStages[currentStageIndex + 1]) {
+            nextStepEl.innerHTML = 'Next step at ' + formatTime(currentStage.duration) + ' - ' + cookingStages[currentStageIndex + 1].stage;
         }
         cookingTimer = setTimeout(function() {
-            currentStage++;
+            currentStageIndex++;
             updateCookingStage();
-        }, stage.duration * 60000); // Convert minutes to milliseconds
+        }, currentStage.duration * 60000); // Convert minutes to milliseconds
     } else {
         if (currentStepEl) currentStepEl.innerHTML = '<b>Cooking Completed</b>';
         clearTimeout(cookingTimer);
