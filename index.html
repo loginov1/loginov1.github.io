@@ -9,15 +9,19 @@
 </head>
 <body>
     <div class="container">
-        <h1>PlovMate - Your Trusted Plov Preparation Assistant</h1>
-        <input type="number" id="guestsInput" placeholder="Enter number of guests" />
-        <button id="calculateIngredients">Calculate Ingredients</button>
-        <div id="ingredientsList"></div>
-
-        <button id="startCooking">Start Cooking</button>
-        <div id="timer"></div>
-        <div id="currentStage"></div>
-        <div id="fireIntensity"></div>
+        <div id="preCooking">
+            <h1>PlovMate - Your Trusted Plov Preparation Assistant</h1>
+            <input type="number" id="guestsInput" placeholder="Enter number of guests" />
+            <button id="calculateIngredients">Calculate Ingredients</button>
+            <div id="ingredientsList"></div>
+            <button id="startCooking">Start Cooking</button>
+        </div>
+        <div id="duringCooking" class="hidden">
+            <div id="previousStep"></div>
+            <div id="currentTimer" class="timer"></div>
+            <div id="currentStep"></div>
+            <div id="nextStep"></div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

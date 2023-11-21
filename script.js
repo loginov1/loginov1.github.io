@@ -6,6 +6,8 @@ document.getElementById('calculateIngredients').addEventListener('click', functi
 
 document.getElementById('startCooking').addEventListener('click', function() {
     startCooking();
+    document.getElementById('preCooking').classList.add('hidden');
+    document.getElementById('duringCooking').classList.remove('hidden');
 });
 
 const baseIngredients = {
@@ -28,31 +30,45 @@ function calculateIngredients(guests) {
 }
 
 let cookingTimer;
-let currentStage = 0;
+let startTime;
 const cookingStages = [
-    { stage: "Heat Kazan", duration: 5, instruction: "Set fire to medium", nextAction: "Add oil" },
-    { stage: "Add Oil", duration: 2, instruction: "Add 200ml of oil", nextAction: "Add meat" },
-    { stage: "Add Meat", duration: 10, instruction: "Add the meat and fry", nextAction: "Add carrots" },
+    { stage: "Add onions and stir", duration: 15 },
+    { stage: "Add the carrots", duration: 65 },
+    { stage: "Add the rice and don't stir", duration: 70 },
     // Additional stages can be added here
 ];
 
 function startCooking() {
+    startTime = new Date();
     currentStage = 0;
     updateCookingStage();
+    updateTimer();
 }
 
 function updateCookingStage() {
     if (currentStage < cookingStages.length) {
         const stage = cookingStages[currentStage];
-        document.getElementById('currentStage').innerHTML = '<b>Current Stage:</b> ' + stage.stage;
-        document.getElementById('fireIntensity').innerHTML = '<b>Instructions:</b> ' + stage.instruction;
+        document.getElementById('currentStep').innerHTML = stage.stage;
+        document.getElementById('nextStep').innerHTML = 'Next step at ' + formatTime(cookingStages[currentStage + 1].duration) + ' - ' + cookingStages[currentStage + 1].stage;
         cookingTimer = setTimeout(function() {
-            alert('Time for the next step: ' + stage.nextAction);
             currentStage++;
             updateCookingStage();
         }, stage.duration * 60000); // Convert minutes to milliseconds
     } else {
-        document.getElementById('currentStage').innerHTML = '<b>Cooking Completed</b>';
+        document.getElementById('currentStep').innerHTML = '<b>Cooking Completed</b>';
         clearTimeout(cookingTimer);
     }
+}
+
+function updateTimer() {
+    setInterval(function() {
+        const now = new Date();
+        const elapsed = new Date(now - startTime);
+        const formattedTime = formatTime(elapsed.getUTCHours()) + ':' + formatTime(elapsed.getUTCMinutes()) + ':' + formatTime(elapsed.getUTCSeconds());
+        document.getElementById('currentTimer').innerHTML = formattedTime;
+    }, 1000);
+}
+
+function formatTime(time) {
+    return time < 10 ? '0' + time : time;
 }
