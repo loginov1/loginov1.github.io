@@ -40,7 +40,7 @@ const baseIngredients = {
     pepper: 1.5
 };
 
-let cookingTimer, countdownTimer;
+    let cookingTimer, countdownTimer;
     let startTime, lastStageTime;
     let currentStageIndex = 0;
     const cookingStages = [
@@ -65,21 +65,25 @@ let cookingTimer, countdownTimer;
         const previousStepEl = document.getElementById('previousStep');
         const currentStepEl = document.getElementById('currentStep');
         const nextStepEl = document.getElementById('nextStep');
+
         if (currentStageIndex < cookingStages.length) {
             const currentStage = cookingStages[currentStageIndex];
+
             if (currentStepEl) currentStepEl.innerHTML = currentStage.stage;
             if (previousStepEl && currentStageIndex > 0) {
                 const prevStageTime = convertToCET(lastStageTime);
                 previousStepEl.innerHTML = prevStageTime + ' - ' + cookingStages[currentStageIndex - 1].stage;
             }
+
             if (nextStepEl && cookingStages[currentStageIndex + 1]) {
                 updateNextStageCountdown(cookingStages[currentStageIndex + 1], nextStepEl);
             }
-            lastStageTime = new Date(); // Update last stage time
+
+            lastStageTime = new Date();
             cookingTimer = setTimeout(function() {
                 currentStageIndex++;
                 updateCookingStage();
-            }, currentStage.duration * 60000); // Convert minutes to milliseconds
+            }, currentStage.duration * 60000);
         } else {
             if (currentStepEl) currentStepEl.innerHTML = '<b>Cooking Completed</b>';
             clearTimeout(cookingTimer);
